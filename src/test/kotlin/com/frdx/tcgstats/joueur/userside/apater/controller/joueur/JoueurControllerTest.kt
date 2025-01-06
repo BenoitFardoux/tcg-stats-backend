@@ -1,6 +1,7 @@
 package com.frdx.tcgstats.joueur.userside.apater.controller.joueur
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.frdx.tcgstats.joueur.domain.exception.CourrielInvalideException
 import com.frdx.tcgstats.joueur.domain.usecase.joueur.CreerJoueur
 import com.frdx.tcgstats.joueur.userside.dto.CreerJoueurRestRessource
 import com.frdx.tcgstats.joueur.userside.mapper.JoueurMapper.toJoueur
@@ -16,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
 
-@WebMvcTest(JoueurController::class,  excludeAutoConfiguration = [SecurityAutoConfiguration::class])
+@WebMvcTest(JoueurController::class, excludeAutoConfiguration = [SecurityAutoConfiguration::class])
 class JoueurControllerTest {
 
     @Autowired
@@ -27,6 +28,7 @@ class JoueurControllerTest {
 
     @MockitoBean
     private lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
+
     @Test
     fun `Lorsque j'essaye de créer un joueur je ne rencontre aucune erreur`() {
         // GIVEN
@@ -46,6 +48,27 @@ class JoueurControllerTest {
         }.andExpect {
             status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
+        }}
+
+        @Test
+        fun `Lorsque j'essaye de créer un joueur avec une adresse mail invalide, j'ai une erreur 400`() {
+            // GIVEN
+            val password = "#password"
+            val utilisateurACreer = CreerJoueurRestRessource("addresseMail", password, "test")
+            val joueur = utilisateurACreer.toJoueur()
+
+            // WHEN
+            `when`(bCryptPasswordEncoder.encode(password)).thenReturn("#password")
+            `when`(creerJoueur(joueur)).thenThrow(CourrielInvalideException::class.java)
+
+            // THEN
+            mockMvc.post("/tcgstat/joueur/creer") {
+                contentType = MediaType.APPLICATION_JSON
+                accept = MediaType.APPLICATION_JSON
+                content = jacksonObjectMapper().writeValueAsString(utilisateurACreer)
+            }.andExpect {
+                status { isBadRequest() }
+                content { contentType(MediaType.APPLICATION_PROBLEM_JSON) }
+            }
         }
     }
-}
