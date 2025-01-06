@@ -21,6 +21,10 @@ class SecurityConfiguration{
             "/api/**", "**", "/swagger-ui/**",
             "/v3/api-docs/**",
         )
+
+        val PUBLIC_POST_REQUEST_MANAGER: Array<String> = arrayOf(
+            "**",
+        )
     }
 
     @Bean
@@ -28,7 +32,8 @@ class SecurityConfiguration{
         http.csrf { it.disable() }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.GET, *PUBLIC_GET_REQUEST_MANAGER).permitAll()
-                    .anyRequest().authenticated()
+
+                it.requestMatchers(HttpMethod.POST, *PUBLIC_POST_REQUEST_MANAGER).permitAll().anyRequest().authenticated()
             }
         return http.build()
     }
