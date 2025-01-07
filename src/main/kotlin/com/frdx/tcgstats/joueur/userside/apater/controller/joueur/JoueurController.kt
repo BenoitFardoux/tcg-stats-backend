@@ -6,6 +6,7 @@ import com.frdx.tcgstats.joueur.userside.apater.controller.joueur.documentation.
 import com.frdx.tcgstats.joueur.userside.dto.CreerJoueurRestRessource
 import com.frdx.tcgstats.joueur.userside.exception.MotDePasseInvalideException
 import com.frdx.tcgstats.joueur.userside.mapper.JoueurMapper.toJoueur
+import com.frdx.tcgstats.utils.Utils.motDePasseEstValide
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -22,6 +23,9 @@ class JoueurController(private val creerJoueur: CreerJoueur, private val passwor
 
     @PostMapping("/creer",  produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun creer(@RequestBody joueur : CreerJoueurRestRessource) : ResponseEntity<Joueur> {
+        motDePasseEstValide(joueur.motDePasse).let {
+            if (!it) throw MotDePasseInvalideException("Mot de passe invalide")
+        }
         joueur.motDePasse.ifBlank { throw MotDePasseInvalideException("Le mot de passe est vide") }
         val passwordEncoder = passwordEncoder.encode(joueur.motDePasse)
 
