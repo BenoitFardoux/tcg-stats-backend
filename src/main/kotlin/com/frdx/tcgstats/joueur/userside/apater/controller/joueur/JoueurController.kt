@@ -3,6 +3,7 @@ package com.frdx.tcgstats.joueur.userside.apater.controller.joueur
 import com.frdx.tcgstats.joueur.domain.usecase.joueur.CreerJoueur
 import com.frdx.tcgstats.joueur.domain.usecase.joueur.RecupererJoueur
 import com.frdx.tcgstats.joueur.domain.usecase.joueur.RecupererJoueurs
+import com.frdx.tcgstats.joueur.domain.usecase.joueur.SupprimerJoueur
 import com.frdx.tcgstats.joueur.userside.apater.controller.joueur.documentation.JoueurControllerDocumentation
 import com.frdx.tcgstats.joueur.userside.dto.CreerJoueurRestRessource
 import com.frdx.tcgstats.joueur.userside.dto.JoueurRestRessource
@@ -13,6 +14,7 @@ import com.frdx.tcgstats.utils.Utils.motDePasseEstValide
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -23,11 +25,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("tcgstat/joueur")
-class JoueurController(
+ class JoueurController(
     private val creerJoueur: CreerJoueur,
     private val passwordEncoder: BCryptPasswordEncoder,
     private val recupererJoueurs: RecupererJoueurs,
-    private val recupererUnJoueur: RecupererJoueur
+    private val recupererUnJoueur: RecupererJoueur,
+    private val supprimerJoueur: SupprimerJoueur
 ) : JoueurControllerDocumentation {
 
     @PostMapping("/creer", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -55,5 +58,10 @@ class JoueurController(
     override fun recupererParId(@PathVariable id: String): ResponseEntity<JoueurRestRessource> {
         val joueur = recupererUnJoueur(id)
         return ResponseEntity.ok(joueur.toJoueurRestRessource())
+    }
+
+    @DeleteMapping("/{id}")
+    override fun supprimerUnJoueur(@PathVariable id: String) {
+        supprimerJoueur(id)
     }
 }

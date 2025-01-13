@@ -60,4 +60,21 @@ interface JoueurControllerDocumentation {
         ]
     )
     fun recupererParId(@PathVariable id: String): ResponseEntity<JoueurRestRessource>
+ @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "L'utilisateur a été supprimé"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "L'utilisateur n'existe pas",
+                content = [Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE)]
+            )
+        ]
+    )
+    fun supprimerUnJoueur(@PathVariable id: String)
+
+
+
 }
