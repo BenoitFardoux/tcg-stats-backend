@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class SecurityConfiguration{
     companion object {
         val PUBLIC_GET_REQUEST_MANAGER: Array<String> = arrayOf(
-            "/api/**", "**", "/swagger-ui/**",
+            "/api/**", "/**", "/swagger-ui/**","/actuator",
             "/v3/api-docs/**",
         )
 

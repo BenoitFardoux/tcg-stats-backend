@@ -1,7 +1,9 @@
 package com.frdx.tcgstats.joueur.userside.apater.controller.joueur
 
 import com.frdx.tcgstats.joueur.domain.exception.CourrielInvalideException
+import com.frdx.tcgstats.joueur.serverside.exception.IdentifiantJoueurInvalide
 import com.frdx.tcgstats.joueur.serverside.exception.JoueurDejaExistantException
+import com.frdx.tcgstats.joueur.serverside.exception.JoueurInnexistantException
 import com.frdx.tcgstats.joueur.userside.exception.MotDePasseInvalideException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
@@ -29,5 +31,15 @@ class JoueurControllerAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     fun error409(exception: JoueurDejaExistantException) : ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.message)
+    }
+    @ExceptionHandler(JoueurInnexistantException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun error404(exception: JoueurInnexistantException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.message)
+    }
+    @ExceptionHandler(IdentifiantJoueurInvalide::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun error400(exception: IdentifiantJoueurInvalide) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.message)
     }
 }

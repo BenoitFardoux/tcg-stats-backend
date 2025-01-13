@@ -2,7 +2,7 @@ package com.frdx.tcgstats.joueur.userside.mapper
 
 import com.frdx.tcgstats.joueur.domain.model.Joueur
 import com.frdx.tcgstats.joueur.userside.dto.CreerJoueurRestRessource
-import java.util.*
+import com.frdx.tcgstats.joueur.userside.dto.JoueurRestRessource
 
 object JoueurMapper {
     fun CreerJoueurRestRessource.toJoueur() : Joueur {
@@ -13,6 +13,16 @@ object JoueurMapper {
             pseudo = pseudonyme,
             photoProfil = "",
             jeux = emptyList()
+        )
+    }
+    fun Joueur.toJoueurRestRessource() : JoueurRestRessource {
+        return JoueurRestRessource(
+            verifie = verifie,
+            courriel = courriel,
+            pseudo = pseudo,
+            photoProfil = photoProfil,
+            jeux = emptyList(),
+            id = id
         )
     }
 }
