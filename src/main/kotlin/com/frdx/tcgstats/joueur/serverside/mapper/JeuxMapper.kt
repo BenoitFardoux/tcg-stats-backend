@@ -7,6 +7,7 @@ object JeuxMapper {
     fun JeuxDocument.toJeux() : Jeu= Jeu(
         id = this.id!!,
         nom = this.nom,
+        logo = this.logo,
     )
 
     fun Jeu.toJeuxDocument() : JeuxDocument = JeuxDocument(id,nom)

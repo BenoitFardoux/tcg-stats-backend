@@ -23,6 +23,8 @@ data class JeuxDocument(
     @Column(unique = true)
     val nom: String,
 
+    val logo : String = "",
+
     @ManyToMany(mappedBy = "jeux", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @ToStringExclude
     val joueurs: MutableList<JoueurDocument> = mutableListOf()

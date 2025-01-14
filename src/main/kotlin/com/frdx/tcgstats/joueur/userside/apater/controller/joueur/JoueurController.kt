@@ -81,7 +81,7 @@ import org.springframework.web.bind.annotation.RestController
     override fun associerUnJeu(@PathVariable id:String,@RequestBody idJeu: AssocierJeuDto): ResponseEntity<JoueurRestRessource> {
         val joueur = recupererUnJoueur(id)
         val jeuRecupere  = recupererJeu(idJeu.idJeu)
-        val jeu = Jeu(id = jeuRecupere.id!!, nom = jeuRecupere.nom)
+        val jeu = Jeu(id = jeuRecupere.id!!, nom = jeuRecupere.nom, logo = jeuRecupere.logo)
         val resultat = associerJeuAUnJoueur(joueur,jeu)
         return ResponseEntity.ok(resultat.toJoueurRestRessource())
     }
@@ -91,7 +91,7 @@ import org.springframework.web.bind.annotation.RestController
     override fun dissocierUnJeu(@PathVariable id: String,@PathVariable idJeu: String): ResponseEntity<JoueurRestRessource> {
         val joueur = recupererUnJoueur(id)
         val jeuRecupere = recupererJeu(idJeu)
-        val jeu = Jeu(id = jeuRecupere.id!!, nom = jeuRecupere.nom)
+        val jeu = Jeu(id = jeuRecupere.id!!, nom = jeuRecupere.nom, logo = jeuRecupere.logo)
         val resultat = dissocierJeuDUnJoueur(joueur,jeu)
         return ResponseEntity.ok(resultat.toJoueurRestRessource())
     }
