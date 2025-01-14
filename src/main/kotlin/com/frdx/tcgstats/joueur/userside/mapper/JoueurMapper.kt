@@ -21,7 +21,7 @@ object JoueurMapper {
             courriel = courriel,
             pseudo = pseudo,
             photoProfil = photoProfil,
-            jeux = emptyList(),
+            jeux = jeux,
             id = id
         )
     }

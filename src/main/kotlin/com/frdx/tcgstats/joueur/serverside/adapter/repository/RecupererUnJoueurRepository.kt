@@ -17,7 +17,8 @@ class RecupererUnJoueurRepository(val mariaDbJoueurRepository: MariaDbJoueurRepo
 
             val joueur = mariaDbJoueurRepository.findById(UUID.fromString(id))
             if (joueur.isPresent) {
-                return joueur.get().toJoueur()
+                val joueurMappe = joueur.get().toJoueur()
+                return joueurMappe
             }
             throw JoueurInnexistantException(id)
         } catch (illegalArgumentException: IllegalArgumentException) {

@@ -1,6 +1,6 @@
 package com.frdx.tcgstats.joueur.serverside.dto
 
-import com.frdx.tcgstats.joueur.domain.model.Jeux
+import com.frdx.tcgstats.jeux.serverside.dto.JeuxDocument
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -11,8 +11,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.apache.commons.lang3.builder.ToStringExclude
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
@@ -38,12 +38,13 @@ data class JoueurDocument (
 
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
         name = "joueurs_jeux",
         joinColumns = [JoinColumn(name = "joueur_id")],
         inverseJoinColumns = [JoinColumn(name = "jeu_id")]
     )
+    @ToStringExclude
     val jeux: MutableList<JeuxDocument> = mutableListOf()
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {

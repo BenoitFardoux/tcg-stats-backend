@@ -1,5 +1,6 @@
 package com.frdx.tcgstats.joueur.userside.apater.controller.joueur.documentation
 
+import com.frdx.tcgstats.joueur.userside.dto.AssocierJeuDto
 import com.frdx.tcgstats.joueur.userside.dto.CreerJoueurRestRessource
 import com.frdx.tcgstats.joueur.userside.dto.JoueurRestRessource
 import io.swagger.v3.oas.annotations.Operation
@@ -15,7 +16,7 @@ interface JoueurControllerDocumentation {
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Le joueur à bien été créé en base de données"
             ),
             ApiResponse(
@@ -60,10 +61,12 @@ interface JoueurControllerDocumentation {
         ]
     )
     fun recupererParId(@PathVariable id: String): ResponseEntity<JoueurRestRessource>
- @ApiResponses(
+
+
+    @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "204",
                 description = "L'utilisateur a été supprimé"
             ),
             ApiResponse(
@@ -76,5 +79,47 @@ interface JoueurControllerDocumentation {
     fun supprimerUnJoueur(@PathVariable id: String)
 
 
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "L'utilisateur a bien été modifié"
+            ),
+        ApiResponse(
+            responseCode = "404",
+            description = "L'utilisateur ou le jeu n'existe pas",
+            ),
+        ApiResponse(
+            responseCode = "400",
+            description = "Un ou plusieurs UUID est mal formatté",
+        ),
+        ApiResponse(
+            responseCode = "304",
+            description = "Le joueur joue déjà à ce jeu"
+        )
+        ]
+    )
+    fun associerUnJeu(id : String, idJeu : AssocierJeuDto): ResponseEntity<JoueurRestRessource>
 
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "L'utilisateur a bien été modifié"
+            ),
+        ApiResponse(
+            responseCode = "404",
+            description = "L'utilisateur ou le jeu n'existe pas",
+            ),
+        ApiResponse(
+            responseCode = "400",
+            description = "Un ou plusieurs UUID est mal formatté",
+        ),
+        ApiResponse(
+            responseCode = "304",
+            description = "Le joueur ne possede pas ce jeu"
+        )
+        ]
+    )
+    fun dissocierUnJeu(id : String, idJeu : String): ResponseEntity<JoueurRestRessource>
 }

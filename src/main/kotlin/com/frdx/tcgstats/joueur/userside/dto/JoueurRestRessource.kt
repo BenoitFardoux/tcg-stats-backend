@@ -1,6 +1,6 @@
 package com.frdx.tcgstats.joueur.userside.dto
 
-import com.frdx.tcgstats.joueur.domain.model.Jeux
+import com.frdx.tcgstats.joueur.domain.model.Jeu
 import java.util.*
 
 data class JoueurRestRessource (
@@ -9,5 +9,5 @@ data class JoueurRestRessource (
     val courriel : String,
     val pseudo : String,
     val photoProfil : String,
-    val jeux : List<Jeux>
+    val jeux : List<Jeu>
 )

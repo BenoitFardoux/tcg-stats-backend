@@ -1,7 +1,11 @@
 package com.frdx.tcgstats.joueur.userside.apater.controller.joueur
 
+import com.frdx.tcgstats.jeux.serverside.exception.JeuNonExistantException
+import com.frdx.tcgstats.jeux.serverside.exception.UUIDJeuInvalideException
 import com.frdx.tcgstats.joueur.domain.exception.CourrielInvalideException
+import com.frdx.tcgstats.joueur.domain.exception.JoueurNeJouePasException
 import com.frdx.tcgstats.joueur.serverside.exception.IdentifiantJoueurInvalide
+import com.frdx.tcgstats.joueur.serverside.exception.JeuDejaAssocieException
 import com.frdx.tcgstats.joueur.serverside.exception.JoueurDejaExistantException
 import com.frdx.tcgstats.joueur.serverside.exception.JoueurInnexistantException
 import com.frdx.tcgstats.joueur.userside.exception.MotDePasseInvalideException
@@ -41,5 +45,29 @@ class JoueurControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun error400(exception: IdentifiantJoueurInvalide) : ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.message)
+    }
+
+    @ExceptionHandler(UUIDJeuInvalideException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun error400(exception: UUIDJeuInvalideException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.message)
+    }
+
+    @ExceptionHandler(JeuNonExistantException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun error404(exception: JeuNonExistantException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.message)
+    }
+
+    @ExceptionHandler(JeuDejaAssocieException::class)
+    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    fun notModified(exception: JeuDejaAssocieException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_MODIFIED, exception.message)
+    }
+
+    @ExceptionHandler(JoueurNeJouePasException::class)
+    @ResponseStatus(HttpStatus.NOT_MODIFIED)
+    fun notModified(exception: JoueurNeJouePasException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.message)
     }
 }

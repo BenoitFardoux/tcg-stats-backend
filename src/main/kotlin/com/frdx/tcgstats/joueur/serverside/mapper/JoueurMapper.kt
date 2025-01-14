@@ -13,7 +13,9 @@ object JoueurMapper {
         verifie = this.verifie,
         motDePasse = this.motDePasse,
         photoProfil = this.photoProfil,
-        jeux = this.jeux.map { it.toJeux() }
+        jeux = this.jeux.map {
+            it.toJeux()
+        }
     )
 
     fun Joueur.toJoueurDocument() : JoueurDocument {
