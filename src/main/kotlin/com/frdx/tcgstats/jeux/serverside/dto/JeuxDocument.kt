@@ -1,6 +1,7 @@
 package com.frdx.tcgstats.jeux.serverside.dto
 
 import com.frdx.tcgstats.joueur.serverside.dto.JoueurDocument
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -8,6 +9,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
+import org.apache.commons.lang3.builder.ToStringExclude
 import java.util.*
 
 
@@ -21,6 +23,7 @@ data class JeuxDocument(
     @Column(unique = true)
     val nom: String,
 
-    @ManyToMany(mappedBy = "jeux")
-    val joueurs: MutableList<JoueurDocument> = mutableListOf(),
+    @ManyToMany(mappedBy = "jeux", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @ToStringExclude
+    val joueurs: MutableList<JoueurDocument> = mutableListOf()
 )

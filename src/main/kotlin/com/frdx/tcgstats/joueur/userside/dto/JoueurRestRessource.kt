@@ -9,5 +9,5 @@ data class JoueurRestRessource (
     val courriel : String,
     val pseudo : String,
     val photoProfil : String,
-    val jeus : List<Jeu>
+    val jeux : List<Jeu>
 )

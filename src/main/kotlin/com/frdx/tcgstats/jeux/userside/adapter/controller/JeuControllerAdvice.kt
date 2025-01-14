@@ -2,6 +2,7 @@ package com.frdx.tcgstats.jeux.userside.adapter.controller
 
 import com.frdx.tcgstats.jeux.serverside.exception.JeuDejaExistantException
 import com.frdx.tcgstats.jeux.serverside.exception.JeuNonExistantException
+import com.frdx.tcgstats.jeux.serverside.exception.JeuUtiliseException
 import com.frdx.tcgstats.jeux.serverside.exception.UUIDJeuInvalideException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
@@ -28,5 +29,11 @@ class JeuControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun error400(exception : UUIDJeuInvalideException): ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.message)
+    }
+
+    @ExceptionHandler(JeuUtiliseException::class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    fun error400(exception : JeuUtiliseException): ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.message)
     }
 }
