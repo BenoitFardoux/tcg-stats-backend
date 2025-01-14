@@ -1,13 +1,12 @@
-package com.frdx.tcgstats.joueur.serverside.dto
+package com.frdx.tcgstats.jeux.serverside.dto
 
-import com.frdx.tcgstats.joueur.domain.model.Joueur
+import com.frdx.tcgstats.joueur.serverside.dto.JoueurDocument
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToMany
-import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.util.*
 
@@ -19,6 +18,7 @@ data class JeuxDocument(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
+    @Column(unique = true)
     val nom: String,
 
     @ManyToMany(mappedBy = "jeux")

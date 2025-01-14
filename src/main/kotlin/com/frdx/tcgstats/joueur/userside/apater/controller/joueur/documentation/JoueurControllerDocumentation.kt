@@ -15,7 +15,7 @@ interface JoueurControllerDocumentation {
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Le joueur à bien été créé en base de données"
             ),
             ApiResponse(
@@ -63,7 +63,7 @@ interface JoueurControllerDocumentation {
  @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "204",
                 description = "L'utilisateur a été supprimé"
             ),
             ApiResponse(

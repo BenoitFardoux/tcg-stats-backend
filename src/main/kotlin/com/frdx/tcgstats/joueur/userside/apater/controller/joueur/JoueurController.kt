@@ -11,6 +11,7 @@ import com.frdx.tcgstats.joueur.userside.exception.MotDePasseInvalideException
 import com.frdx.tcgstats.joueur.userside.mapper.JoueurMapper.toJoueur
 import com.frdx.tcgstats.joueur.userside.mapper.JoueurMapper.toJoueurRestRessource
 import com.frdx.tcgstats.utils.Utils.motDePasseEstValide
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 
@@ -33,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController
     private val supprimerJoueur: SupprimerJoueur
 ) : JoueurControllerDocumentation {
 
-    @PostMapping("/creer", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun creer(@RequestBody joueur: CreerJoueurRestRessource): ResponseEntity<JoueurRestRessource> {
         motDePasseEstValide(joueur.motDePasse).let {
             if (!it) throw MotDePasseInvalideException("Mot de passe invalide")
@@ -45,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController
 
         val joueurCree = creerJoueur(joueurRestRessource)
 
-        return ResponseEntity.ok(joueurCree.toJoueurRestRessource())
+        return ResponseEntity.status(HttpStatus.CREATED).body(joueurCree.toJoueurRestRessource())
     }
 
     @GetMapping
@@ -61,6 +63,7 @@ import org.springframework.web.bind.annotation.RestController
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     override fun supprimerUnJoueur(@PathVariable id: String) {
         supprimerJoueur(id)
     }

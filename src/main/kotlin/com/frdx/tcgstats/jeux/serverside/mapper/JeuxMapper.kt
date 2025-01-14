@@ -1,6 +1,6 @@
-package com.frdx.tcgstats.joueur.serverside.mapper
+package com.frdx.tcgstats.jeux.serverside.mapper
 
-import com.frdx.tcgstats.joueur.domain.model.Jeu
+import com.frdx.tcgstats.jeux.domain.model.Jeu
 import com.frdx.tcgstats.jeux.serverside.dto.JeuxDocument
 
 object JeuxMapper {

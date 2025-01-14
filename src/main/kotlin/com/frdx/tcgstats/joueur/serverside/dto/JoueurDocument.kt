@@ -1,17 +1,14 @@
 package com.frdx.tcgstats.joueur.serverside.dto
 
-import com.frdx.tcgstats.joueur.domain.model.Jeux
-import jakarta.persistence.CascadeType
+import com.frdx.tcgstats.jeux.serverside.dto.JeuxDocument
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

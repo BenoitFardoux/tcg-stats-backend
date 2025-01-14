@@ -59,12 +59,12 @@ class JoueurControllerTest {
         `when`(bCryptPasswordEncoder.encode(password)).thenReturn("#password")
 
         // THEN
-        mockMvc.post("/tcgstat/joueur/creer") {
+        mockMvc.post("/tcgstat/joueur") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = jacksonObjectMapper().writeValueAsString(utilisateurACreer)
         }.andExpect {
-            status { isOk() }
+            status { isCreated() }
             content { contentType(MediaType.APPLICATION_JSON) }
         }
     }
@@ -79,7 +79,7 @@ class JoueurControllerTest {
         `when`(bCryptPasswordEncoder.encode(password)).thenReturn("#password")
 
         // THEN
-        mockMvc.post("/tcgstat/joueur/creer") {
+        mockMvc.post("/tcgstat/joueur") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = jacksonObjectMapper().writeValueAsString(utilisateurACreer)
@@ -96,7 +96,7 @@ class JoueurControllerTest {
 
         // WHEN
         // THEN
-        mockMvc.post("/tcgstat/joueur/creer") {
+        mockMvc.post("/tcgstat/joueur") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = jacksonObjectMapper().writeValueAsString(utilisateurACreer)
