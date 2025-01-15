@@ -1,7 +1,6 @@
 package com.frdx.tcgstats.joueur.userside.apater.controller.joueur.documentation
 
 import com.frdx.tcgstats.joueur.userside.dto.AssocierJeuDto
-import com.frdx.tcgstats.joueur.userside.dto.CreerJoueurRestRessource
 import com.frdx.tcgstats.joueur.userside.dto.JoueurRestRessource
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

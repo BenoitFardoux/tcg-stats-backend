@@ -42,8 +42,8 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
             val jwt = authHeader.substring(7)
             logger.debug("Processing JWT: $jwt")
 
-            val userEmail: String? = jwtService.extractUsername(jwt)
-            if (userEmail.isNullOrEmpty()) {
+            val userEmail: String = jwtService.extractUsername(jwt)
+            if (userEmail.isEmpty()) {
                 logger.warn("JWT does not contain a valid username")
                 filterChain.doFilter(request, response)
                 return

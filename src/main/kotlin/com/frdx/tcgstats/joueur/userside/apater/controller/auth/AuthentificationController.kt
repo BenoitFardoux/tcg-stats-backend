@@ -2,7 +2,6 @@ package com.frdx.tcgstats.joueur.userside.apater.controller.auth
 
 import com.frdx.tcgstats.joueur.domain.usecase.joueur.ConnecterJoueur
 import com.frdx.tcgstats.joueur.domain.usecase.joueur.CreerJoueur
-import com.frdx.tcgstats.joueur.domain.usecase.joueur.RecupererJoueur
 import com.frdx.tcgstats.joueur.serverside.dto.JoueurDocument
 import com.frdx.tcgstats.joueur.serverside.mapper.JoueurMapper.toJoueur
 import com.frdx.tcgstats.joueur.serverside.mapper.JoueurMapper.toJoueurDocument
@@ -21,8 +20,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -36,10 +33,8 @@ import org.springframework.web.bind.annotation.RestController
 class AuthentificationController(
     val connecterJoueur: ConnecterJoueur,
     val creerJoueur: CreerJoueur,
-    val recupererJoueur: RecupererJoueur,
     val passwordEncoder: BCryptPasswordEncoder,
     private val jwtService: JwtService,
-    val userDetailsService: UserDetailsService
 ) : AuthentificationControllerDocumentation {
 
     @PostMapping("/login")
