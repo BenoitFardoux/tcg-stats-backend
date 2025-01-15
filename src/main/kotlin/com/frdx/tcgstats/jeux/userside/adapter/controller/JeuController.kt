@@ -8,6 +8,7 @@ import com.frdx.tcgstats.jeux.domain.usecase.jeux.SupprimerJeu
 import com.frdx.tcgstats.jeux.userside.adapter.controller.documentation.JeuControllerDocumentation
 import com.frdx.tcgstats.jeux.userside.dto.CreerJeuDto
 import com.frdx.tcgstats.jeux.userside.mapper.JeuMapper.toJeu
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -30,12 +31,14 @@ class JeuController(
 ) : JeuControllerDocumentation {
 
     @PostMapping()
+    @SecurityRequirement(name = "Bearer Authentication")
     override fun creer(@RequestBody creerJeuDto: CreerJeuDto): ResponseEntity<Jeu> {
         val jeuCree = creerJeu(creerJeuDto.toJeu())
         return ResponseEntity.status(HttpStatus.CREATED).body(jeuCree)
     }
 
     @GetMapping
+//    @SecurityRequirement(name = "Bearer Authentication")
     override fun recupererJeux(): ResponseEntity<List<Jeu>> {
         val listeJeux = recupererJeuxUsecase()
         return ResponseEntity.ok(listeJeux)
@@ -48,6 +51,7 @@ class JeuController(
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer Authentication")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     override fun supprimerUnJeu(@PathVariable id: String) {
         supprimerJeu(id)

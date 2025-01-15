@@ -14,29 +14,27 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
 import org.apache.commons.lang3.builder.ToStringExclude
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
-
 @Entity
-@Table(name = "joueurs") // Nom de la table dans la base de données
-data class JoueurDocument (
+@Table(name = "joueurs")
+data class JoueurDocument(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // Utilise un générateur UUID natif si disponible
+    @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
     val verifie: Boolean,
 
     val motDePasse: String,
 
-    @Column(unique = true) // Le courriel doit être unique
+    @Column(unique = true)
     val courriel: String,
 
-    @Column(unique = true) // Le pseudo doit aussi être unique
+    @Column(unique = true)
     val pseudo: String,
 
     val photoProfil: String,
-
-
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
@@ -45,13 +43,28 @@ data class JoueurDocument (
         inverseJoinColumns = [JoinColumn(name = "jeu_id")]
     )
     @ToStringExclude
-    val jeux: MutableList<JeuxDocument> = mutableListOf()
+    val jeux: MutableList<JeuxDocument> = mutableListOf(),
+
+    @ManyToMany(fetch = FetchType.EAGER)  // Une relation avec les rôles
+    @JoinTable(
+        name = "joueurs_roles",
+        joinColumns = [JoinColumn(name = "joueur_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")]
+    )
+    val roles: MutableList<RoleDocument> = mutableListOf()  // Définir un modèle de rôle
 ) : UserDetails {
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
+        // Retourne dynamiquement les rôles associés à l'utilisateur
+        return roles.map { SimpleGrantedAuthority("ROLE_${it.nom}") }.toMutableList()
     }
 
     override fun getPassword(): String = motDePasse
 
-    override fun getUsername(): String = pseudo
+    override fun getUsername(): String = courriel
+
+    override fun isAccountNonExpired(): Boolean = true  // Définissez ces méthodes selon votre logique
+    override fun isAccountNonLocked(): Boolean = true
+    override fun isCredentialsNonExpired(): Boolean = true
+    override fun isEnabled(): Boolean = verifie
 }

@@ -16,9 +16,12 @@ import com.frdx.tcgstats.joueur.userside.exception.MotDePasseInvalideException
 import com.frdx.tcgstats.joueur.userside.mapper.JoueurMapper.toJoueur
 import com.frdx.tcgstats.joueur.userside.mapper.JoueurMapper.toJoueurRestRessource
 import com.frdx.tcgstats.utils.Utils.motDePasseEstValide
+import com.frdx.tcgstats.utils.VerifieDroitJoueurAspect
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,31 +36,16 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("tcgstat/joueur")
- class JoueurController(
-    private val creerJoueur: CreerJoueur,
-    private val passwordEncoder: BCryptPasswordEncoder,
+class JoueurController(
+
     private val recupererJoueurs: RecupererJoueurs,
     private val recupererUnJoueur: RecupererJoueur,
     private val supprimerJoueur: SupprimerJoueur,
     private val associerJeuAUnJoueur: AssocierJeuAUnJoueur,
     private val recupererJeu: RecupererJeu,
-     private val dissocierJeuDUnJoueur: DissocierJeuDUnJoueur
+    private val dissocierJeuDUnJoueur: DissocierJeuDUnJoueur,
 ) : JoueurControllerDocumentation {
 
-    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun creer(@RequestBody joueur: CreerJoueurRestRessource): ResponseEntity<JoueurRestRessource> {
-        motDePasseEstValide(joueur.motDePasse).let {
-            if (!it) throw MotDePasseInvalideException("Mot de passe invalide")
-        }
-        joueur.motDePasse.ifBlank { throw MotDePasseInvalideException("Le mot de passe est vide") }
-        val passwordEncoder = passwordEncoder.encode(joueur.motDePasse)
-
-        val joueurRestRessource = joueur.toJoueur().copy(motDePasse = passwordEncoder)
-
-        val joueurCree = creerJoueur(joueurRestRessource)
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(joueurCree.toJoueurRestRessource())
-    }
 
     @GetMapping
     override fun recuperer(): ResponseEntity<List<JoueurRestRessource>> {
@@ -73,26 +61,40 @@ import org.springframework.web.bind.annotation.RestController
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("authentication.principal.id == T(java.util.UUID).fromString(#id)")
     override fun supprimerUnJoueur(@PathVariable id: String) {
         supprimerJoueur(id)
     }
 
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("/{id}/jeux")
-    override fun associerUnJeu(@PathVariable id:String,@RequestBody idJeu: AssocierJeuDto): ResponseEntity<JoueurRestRessource> {
+    @PreAuthorize("authentication.principal.id == T(java.util.UUID).fromString(#id)")
+    override fun associerUnJeu(
+        @PathVariable id: String,
+        @RequestBody idJeu: AssocierJeuDto
+    ): ResponseEntity<JoueurRestRessource> {
+
         val joueur = recupererUnJoueur(id)
-        val jeuRecupere  = recupererJeu(idJeu.idJeu)
+        val jeuRecupere = recupererJeu(idJeu.idJeu)
         val jeu = Jeu(id = jeuRecupere.id!!, nom = jeuRecupere.nom, logo = jeuRecupere.logo)
-        val resultat = associerJeuAUnJoueur(joueur,jeu)
+        val resultat = associerJeuAUnJoueur(joueur, jeu)
         return ResponseEntity.ok(resultat.toJoueurRestRessource())
     }
 
 
     @DeleteMapping("/{id}/{idJeu}")
-    override fun dissocierUnJeu(@PathVariable id: String,@PathVariable idJeu: String): ResponseEntity<JoueurRestRessource> {
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("authentication.principal.id == T(java.util.UUID).fromString(#id)")
+    override fun dissocierUnJeu(
+        @PathVariable id: String,
+        @PathVariable idJeu: String
+    ): ResponseEntity<JoueurRestRessource> {
         val joueur = recupererUnJoueur(id)
         val jeuRecupere = recupererJeu(idJeu)
         val jeu = Jeu(id = jeuRecupere.id!!, nom = jeuRecupere.nom, logo = jeuRecupere.logo)
-        val resultat = dissocierJeuDUnJoueur(joueur,jeu)
+        val resultat = dissocierJeuDUnJoueur(joueur, jeu)
         return ResponseEntity.ok(resultat.toJoueurRestRessource())
     }
 

@@ -13,28 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 
 interface JoueurControllerDocumentation {
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "201",
-                description = "Le joueur à bien été créé en base de données"
-            ),
-            ApiResponse(
-                responseCode = "400",
-                description = "Les données saisies sont invalides",
-                content = [Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE)]
-            ), ApiResponse(
-                responseCode = "409",
-                description = "L'utilisateur existe déjà.",
-                content = [Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE)]
-            )
-        ]
-    )
-    @Operation(
-        summary = "Créer un utilisateur",
-        security = [SecurityRequirement(name = "")]
-    )
-    fun creer(joueur: CreerJoueurRestRessource): ResponseEntity<JoueurRestRessource>
+
 
     @ApiResponses(
         value = [

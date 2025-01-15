@@ -4,6 +4,6 @@ import java.util.UUID
 
 data class Jeu(
     val id : UUID? = null,
-    val logo : String,
+    val logo : String? = "",
     val nom : String,
 )
