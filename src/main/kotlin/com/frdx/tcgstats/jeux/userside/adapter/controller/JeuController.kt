@@ -11,6 +11,7 @@ import com.frdx.tcgstats.jeux.userside.mapper.JeuMapper.toJeu
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -32,6 +33,7 @@ class JeuController(
 
     @PostMapping()
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     override fun creer(@RequestBody creerJeuDto: CreerJeuDto): ResponseEntity<Jeu> {
         val jeuCree = creerJeu(creerJeuDto.toJeu())
         return ResponseEntity.status(HttpStatus.CREATED).body(jeuCree)
@@ -53,6 +55,7 @@ class JeuController(
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer Authentication")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     override fun supprimerUnJeu(@PathVariable id: String) {
         supprimerJeu(id)
     }
