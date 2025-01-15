@@ -13,7 +13,7 @@ import java.util.UUID
 data class RoleDocument(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID,
+    val id: UUID? = null,
 
     @Column(unique = true)
     val nom: String

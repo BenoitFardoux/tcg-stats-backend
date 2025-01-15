@@ -66,5 +66,4 @@ data class JoueurDocument(
     override fun isAccountNonExpired(): Boolean = true  // Définissez ces méthodes selon votre logique
     override fun isAccountNonLocked(): Boolean = true
     override fun isCredentialsNonExpired(): Boolean = true
-    override fun isEnabled(): Boolean = verifie
 }

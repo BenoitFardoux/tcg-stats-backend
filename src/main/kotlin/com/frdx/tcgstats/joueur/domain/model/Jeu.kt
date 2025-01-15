@@ -6,4 +6,5 @@ data class Jeu(
     val nom : String,
     val id : UUID,
     val logo : String? = "",
+    val role : List<String> = emptyList(),
 )
