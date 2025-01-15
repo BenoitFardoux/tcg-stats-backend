@@ -15,7 +15,8 @@ object JoueurMapper {
         photoProfil = this.photoProfil,
         jeux = this.jeux.map {
             it.toJeux()
-        }
+        },
+        roles = this.roles.map { it.nom }
     )
 
     fun Joueur.toJoueurDocument() : JoueurDocument {

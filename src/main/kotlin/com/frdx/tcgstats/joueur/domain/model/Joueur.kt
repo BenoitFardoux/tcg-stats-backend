@@ -9,5 +9,6 @@ data class Joueur (
     val courriel : String,
     val pseudo : String,
     val photoProfil : String,
-    val jeux : List<Jeu>
+    val jeux : List<Jeu>,
+    val roles : List<String>
 )

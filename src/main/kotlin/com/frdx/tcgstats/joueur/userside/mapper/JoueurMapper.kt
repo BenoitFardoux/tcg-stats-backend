@@ -12,7 +12,8 @@ object JoueurMapper {
             courriel = courriel,
             pseudo = pseudonyme,
             photoProfil = "",
-            jeux = emptyList()
+            jeux = emptyList(),
+            roles = emptyList(),
         )
     }
     fun Joueur.toJoueurRestRessource() : JoueurRestRessource {
@@ -22,7 +23,8 @@ object JoueurMapper {
             pseudo = pseudo,
             photoProfil = photoProfil,
             jeux = jeux,
-            id = id
+            id = id,
+            roles = roles,
         )
     }
 }
