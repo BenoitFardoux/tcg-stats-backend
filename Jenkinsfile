@@ -40,7 +40,11 @@ pipeline {
                         -e MYSQL_PASSWORD=password \
                         -p 3306:3306 \
                         mariadb:10.5
-                    sleep 10
+        
+                    echo "🕒 Attente que MariaDB démarre..."
+                    sleep 15  # Augmente à 20 ou 30 si nécessaire
+        
+                    echo "✅ MariaDB devrait être prête"
                     '''
                 }
             }
