@@ -62,6 +62,12 @@ pipeline {
             }
         }
 
+        stage('Run Tests') {
+            steps {
+                sh 'gradle test --gradle-user-home /tmp/gradle'
+            }
+        }
+
         stage('Archive Artifact') {
             steps {
                 archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
